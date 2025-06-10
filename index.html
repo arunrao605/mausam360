@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mausam360°</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="gifs/icon.ico" type="image/x-icon"/>
+</head>
+<body>
+<!-- Splash Screen -->
+<div id="splash">
+  <div class="splash-content">
+    <!-- Thermometer -->
+    <div class="thermometer-wrapper">
+      <div class="thermometer">
+        <div class="mercury" id="mercury"></div>
+        <span class="degree-label" id="degreeLabel">°C</span>
+        <div class="temp-value" id="tempValue">0°C</div>
+      </div>
+
+      <!-- Logo beside thermometer -->
+      <img src="gifs/icon.ico" alt="Mausam360° Logo" class="splash-logo" />
+    </div>
+
+    <!-- Title below -->
+    <h1 class="splash-title">Mausam360°</h1>
+  </div>
+</div>
+  <!-- Dynamic Background -->
+  <div id="background"></div>
+
+  <div class="container">
+    <div class="branding">
+      <img src="gifs/icon.ico" alt="App Icon" class="branding-icon" />
+      <span class="branding-title">Mausam360°</span>
+    </div>
+    
+    <!-- Left: Current Weather -->
+    <div class="current-weather">
+      <!-- Location Input -->
+      <input type="text" id="locationInput" placeholder="Enter a location" />
+
+      <div id="ClimaCast">
+        <h2 id="location">--</h2>
+        <h1 id="temperature">--°C</h1>
+        <h3 id="description">--</h3>
+        <img id="icon" src="" alt="weather icon" />
+        <div class="local-time" id="localTime"></div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <!-- Top: Live Conditions -->
+      <div class="live-conditions-wrapper">
+        <h2>Live Conditions</h2>
+        <div id="liveConditions" class="live-conditions"></div>
+      </div>
+
+      <!-- Bottom: 5-Day Forecast -->
+      <div class="forecast">
+        <h2>5-Day Forecast</h2>
+        <div id="forecastCards"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">© 2025 Mausam360. All rights reserved.</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

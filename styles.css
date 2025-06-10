@@ -1,0 +1,462 @@
+/* Base Styles */
+body.loading {
+  overflow: hidden;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto; 
+}
+
+/* Background GIF */
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -3;
+  opacity: 0.6;
+}
+#background {
+  background-image: url('gifs/splash.png'); /* 🖼️ Your default gif */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Container Layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    padding: 30px;
+  }
+}
+
+/* Current Weather Section */
+.current-weather {
+  width: 100%;
+  background: rgba(255, 255, 255, 0);
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 20px;
+  text-align: center;
+  font-size:90xp;
+  color: rgb(0, 0, 0);
+}
+
+@media (min-width: 768px) {
+  .current-weather {
+    width: 40%;
+    margin-top: 60px;
+  }
+}
+/* Icons */
+#icon {
+  width: 350px;
+  height: 350px;
+  object-fit: contain;
+}
+
+.current-weather input {
+  width: 90%;
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+}
+
+/* Right Panel */
+.right-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .right-panel {
+    width: 55%;
+    margin-left: 5%;
+  }
+}
+
+/* Live Conditions */
+.live-conditions-wrapper {
+  background: rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  padding: 15px;
+  font-weight: bold;
+  color: black;
+}
+
+.live-conditions {
+  white-space: pre-line;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+  color: rgb(0, 0, 0);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: rgba(0, 0, 0, 0);
+  padding: 10px;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .live-conditions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.live-conditions .condition {
+  background: rgba(255, 255, 255, 0);
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Forecast */
+.forecast {
+  background: rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  padding: 15px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  margin-top: 20px;
+  font-size: 17px;
+}
+
+#forecastCards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.card {
+  text-align: center;
+  min-width: 100px;
+  flex: 1;
+}
+
+/* Icons */
+#icon {
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  #icon {
+    max-height: 350px;
+  }
+}
+
+.forecast-icon {
+  width: 80px;
+  height: 80px;
+}
+
+@media (min-width: 768px) {
+  .forecast-icon {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+.condition-icon {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 5px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .condition-icon {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* Local Time */
+.local-time {
+  font-size: 16px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  color: rgba(8, 8, 8, 0.986);
+  margin-top: 10px;
+  font-weight: bold;
+  color: black;
+  white-space: pre-line;
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  color: black;
+  padding: 10px 0;
+  position: relative; /* Change from absolute to relative */
+  bottom: auto;
+}
+
+/* Branding on Main Page */
+.branding {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .branding {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    justify-content: flex-start;
+  }
+}
+
+.branding-icon {
+  width: 50px;
+  height: 50px;
+}
+
+@media (min-width: 768px) {
+  .branding-icon {
+    width: 85px;
+    height: 85px;
+  }
+}
+
+.branding-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  font-family: Papyrus;
+}
+
+@media (min-width: 768px) {
+  .branding-title {
+    font-size: 30px;
+  }
+}
+
+/* Splash Page */
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('gifs/splash.png');
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeOut 1s ease-out 2s forwards;
+}
+
+/* Thermometer Container */
+.thermometer {
+  width: 30px;
+  height: 150px;
+  border: 3px solid #555;
+  border-radius: 15px;
+  background: #757575;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .thermometer {
+    width: 40px;
+    height: 200px;
+    border: 4px solid #555;
+    border-radius: 20px;
+    margin-bottom: 30px;
+  }
+}
+
+/* Mercury Level */
+.mercury {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(to top, red, orange);
+  transition: height 0.2s ease-in;
+}
+
+/* Degree Label inside Mercury */
+.degree-label {
+  position: absolute;
+  right: -20px;
+  top: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
+}
+
+@media (min-width: 768px) {
+  .degree-label {
+    right: -25px;
+    font-size: 20px;
+  }
+}
+
+/* Temperature Display */
+.temp-value {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Papyrus, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #444;
+}
+
+@media (min-width: 768px) {
+  .temp-value {
+    top: -30px;
+    font-size: 20px;
+  }
+}
+
+.splash-title {
+  font-size: 30px;
+  font-family: Papyrus, fantasy;
+  font-weight: bold;
+  color: #ffffff;
+  animation: titlePop 1.5s ease-out forwards;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .splash-title {
+    font-size: 50px;
+  }
+}
+
+@keyframes titlePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Splash Layout */
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Side-by-side thermometer + logo */
+.thermometer-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+@media (min-width: 768px) {
+  .thermometer-wrapper {
+    gap: 30px;
+  }
+}
+
+/* Splash Logo Style */
+.splash-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .splash-logo {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+.splash-logo {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* Headers */
+h2 {
+  text-align: center;
+  margin: 10px 0;
+}
+/* Add Scrollbar to the Whole Page */
+body, html {
+  overflow-x: auto;
+  overflow-y: auto; /* Enables scrolling */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: darkgray lightgray; /* Custom scrollbar colors */
+}
+
+/* Custom Scrollbar for WebKit Browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: lightgray;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: darkgray;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: gray;
+}

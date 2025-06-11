@@ -1,90 +1,174 @@
 const apiKey = '1fe933f5a61a36de2d237bb0d8fb3a74';
 
+// DOM Elements
 const locationInput = document.getElementById('locationInput');
+const searchBtn = document.getElementById('searchBtn');
 const locationDisplay = document.getElementById('location');
 const tempDisplay = document.getElementById('temperature');
 const descDisplay = document.getElementById('description');
 const iconDisplay = document.getElementById('icon');
 const forecastCards = document.getElementById('forecastCards');
-const background = document.getElementById('background');
 const localTimeDisplay = document.getElementById('localTime');
 const liveConditions = document.getElementById('liveConditions');
+const tempMinDisplay = document.getElementById('temp-min');
+const tempMaxDisplay = document.getElementById('temp-max');
+const hourlyCards = document.getElementById('hourlyCards');
 
+// Default location
+let currentLocation = 'London';
+
+// Event Listeners
 locationInput.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
-    fetchWeather(locationInput.value);
+    currentLocation = locationInput.value;
+    fetchWeather(currentLocation);
   }
 });
 
+searchBtn.addEventListener('click', function() {
+  currentLocation = locationInput.value;
+  fetchWeather(currentLocation);
+});
+
+// Initialize particles.js
+document.addEventListener('DOMContentLoaded', function() {
+  particlesJS('particles-js', {
+    particles: {
+      number: { value: 80, density: { enable: true, value_area: 800 } },
+      color: { value: "#4361ee" },
+      shape: { type: "circle", stroke: { width: 0 }, polygon: { nb_sides: 5 } },
+      opacity: { value: 0.5 },
+      size: { value: 3, random: true },
+      line_linked: { enable: true, distance: 150, color: "#4361ee", opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 2, out_mode: "out" }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+      modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+  });
+});
+
+// Fetch Weather Data
 function fetchWeather(city) {
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
 
-  fetch(weatherUrl)
-    .then(res => res.json())
-    .then(data => {
-      const timezoneOffset = data.timezone;
-      const localDate = getLocalDateTime(data.dt, timezoneOffset);
+  document.querySelector('.container').classList.add('animate__animated', 'animate__fadeOut');
 
-      localTimeDisplay.textContent = `${localDate.day}, ${localDate.date} ${localDate.month} ${localDate.year} — ${localDate.timeOfDay}\nLocal Time: ${localDate.formattedTime}`;
+  setTimeout(() => {
+    fetch(weatherUrl)
+      .then(res => {
+        if (!res.ok) throw new Error('City not found');
+        return res.json();
+      })
+      .then(data => {
+        const timezoneOffset = data.timezone;
+        const localDate = getLocalDateTime(data.dt, timezoneOffset);
 
-      locationDisplay.textContent = data.name;
-      tempDisplay.textContent = `${Math.round(data.main.temp)}°C`;
-      descDisplay.textContent = data.weather[0].description;
-      iconDisplay.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+        localTimeDisplay.textContent = `${localDate.day}, ${localDate.date} ${localDate.month} ${localDate.year} — ${localDate.timeOfDay}\nLocal Time: ${localDate.formattedTime}`;
+        locationDisplay.textContent = data.name;
+        tempDisplay.textContent = `${Math.round(data.main.temp)}°C`;
+        tempMinDisplay.textContent = `↓ ${Math.round(data.main.temp_min)}°`;
+        tempMaxDisplay.textContent = `↑ ${Math.round(data.main.temp_max)}°`;
+        descDisplay.textContent = data.weather[0].description.charAt(0).toUpperCase() + data.weather[0].description.slice(1);
+        iconDisplay.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
+        iconDisplay.alt = data.weather[0].description;
 
-      liveConditions.innerHTML = `
-        <div class="condition">
-          <img src="gifs/feels.png" class="condition-icon" alt="Feels Like" />
-          <strong>Feels Like</strong><br>${Math.round(data.main.feels_like)}°C
-        </div>
-        <div class="condition">
-          <img src="gifs/humidity.png" class="condition-icon" alt="Humidity" />
-          <strong>Humidity</strong><br>${data.main.humidity}%
-        </div>
-        <div class="condition">
-          <img src="gifs/wind.png" class="condition-icon" alt="Wind" />
-          <strong>Wind Speed</strong><br>${data.wind.speed} m/s
-        </div>
-        <div class="condition">
-          <img src="gifs/Cloudiness.png" class="condition-icon" alt="Cloudiness" />
-          <strong>Cloudiness</strong><br>${data.clouds.all}%
-        </div>
-        <div class="condition">
-          <img src="gifs/pressure.png" class="condition-icon" alt="Pressure" />
-          <strong>Pressure</strong><br>${data.main.pressure} hPa
-        </div>
-        <div class="condition">
-          <img src="gifs/visibility.png" class="condition-icon" alt="Visibility" />
-          <strong>Visibility</strong><br>${(data.visibility / 1000).toFixed(1)} km
-        </div>
-      `;
-      updateBackground(data.weather[0].main, data.weather[0].description.toLowerCase(), data.dt, data.sys.sunrise, data.sys.sunset, timezoneOffset);
-    });
+        iconDisplay.classList.add('animate__animated', 'animate__pulse');
+        setTimeout(() => iconDisplay.classList.remove('animate__animated', 'animate__pulse'), 1000);
 
-  fetch(forecastUrl)
-    .then(res => res.json())
-    .then(data => {
-      forecastCards.innerHTML = '';
-      const days = {};
+        liveConditions.innerHTML = `
+          <div class="condition animate__animated animate__fadeInUp animate-delay-1">
+            <img src="gifs/feels.png" class="condition-icon" alt="Feels Like" />
+            <strong>Feels Like</strong><br>${Math.round(data.main.feels_like)}°C
+          </div>
+          <div class="condition animate__animated animate__fadeInUp animate-delay-2">
+            <img src="gifs/humidity.png" class="condition-icon" alt="Humidity" />
+            <strong>Humidity</strong><br>${data.main.humidity}%
+          </div>
+          <div class="condition animate__animated animate__fadeInUp animate-delay-3">
+            <img src="gifs/wind.png" class="condition-icon" alt="Wind" />
+            <strong>Wind Speed</strong><br>${data.wind.speed} m/s
+          </div>
+          <div class="condition animate__animated animate__fadeInUp animate-delay-1">
+            <img src="gifs/Cloudiness.png" class="condition-icon" alt="Cloudiness" />
+            <strong>Cloudiness</strong><br>${data.clouds.all}%
+          </div>
+          <div class="condition animate__animated animate__fadeInUp animate-delay-2">
+            <img src="gifs/pressure.png" class="condition-icon" alt="Pressure" />
+            <strong>Pressure</strong><br>${data.main.pressure} hPa
+          </div>
+          <div class="condition animate__animated animate__fadeInUp animate-delay-3">
+            <img src="gifs/visibility.png" class="condition-icon" alt="Visibility" />
+            <strong>Visibility</strong><br>${(data.visibility / 1000).toFixed(1)} km
+          </div>
+        `;
 
-      data.list.forEach(entry => {
-        const date = new Date(entry.dt_txt);
-        const day = date.toDateString();
-
-        if (!days[day] && Object.keys(days).length < 5) {
-          days[day] = entry;
-          const icon = entry.weather[0].icon;
-          forecastCards.innerHTML += `
-            <div class="card">
-              <h4>${day.split(' ')[0]}</h4>
-              <img class="forecast-icon" src="https://openweathermap.org/img/wn/${icon}@2x.png" />
-              <p>${Math.round(entry.main.temp)}°C</p>
-            </div>
-          `;
-        }
+        document.querySelector('.container').classList.remove('animate__fadeOut');
+        document.querySelector('.container').classList.add('animate__animated', 'animate__fadeIn');
+      })
+      .catch(err => {
+        alert(err.message);
+        document.querySelector('.container').classList.remove('animate__fadeOut');
+        document.querySelector('.container').classList.add('animate__animated', 'animate__fadeIn');
       });
-    });
+
+    fetch(forecastUrl)
+      .then(res => res.json())
+      .then(data => {
+        forecastCards.innerHTML = '';
+        const days = {};
+        let dayCount = 0;
+
+        data.list.forEach(entry => {
+          const date = new Date(entry.dt * 1000);
+          const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+          if (date.getHours() >= 11 && date.getHours() <= 13 && !days[day] && dayCount < 5) {
+            days[day] = entry;
+            dayCount++;
+            const icon = entry.weather[0].icon;
+
+            forecastCards.innerHTML += `
+              <div class="card animate__animated animate__fadeInUp" style="animation-delay: ${dayCount * 0.1}s">
+                <h4>${day}</h4>
+                <img class="forecast-icon" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${entry.weather[0].description}" />
+                <p>${Math.round(entry.main.temp)}°C</p>
+                <small>${entry.weather[0].description}</small>
+              </div>
+            `;
+          }
+        });
+
+        updateHourlyForecast(data.list);
+      });
+  }, 500);
+}
+
+function updateHourlyForecast(forecastList) {
+  hourlyCards.innerHTML = '';
+
+  const now = new Date();
+  const next12Hours = forecastList.filter(entry => {
+    const entryTime = new Date(entry.dt * 1000);
+    return entryTime > now && entryTime <= new Date(now.getTime() + 12 * 60 * 60 * 1000);
+  }).slice(0, 8);
+
+  next12Hours.forEach((entry, index) => {
+    const time = new Date(entry.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const icon = entry.weather[0].icon;
+
+    hourlyCards.innerHTML += `
+      <div class="hourly-card animate__animated animate__fadeInRight" style="animation-delay: ${index * 0.1}s">
+        <div>${time}</div>
+        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${entry.weather[0].description}" />
+        <div>${Math.round(entry.main.temp)}°C</div>
+      </div>
+    `;
+  });
 }
 
 function getLocalDateTime(unixTime, offset) {
@@ -97,54 +181,42 @@ function getLocalDateTime(unixTime, offset) {
   const date = local.getUTCDate();
   const month = months[local.getUTCMonth()];
   const year = local.getUTCFullYear();
-
   const hour = local.getUTCHours();
   const minute = local.getUTCMinutes().toString().padStart(2, '0');
   const formattedTime = `${hour.toString().padStart(2, '0')}:${minute}`;
 
   let timeOfDay = '';
-  if (hour >= 5 && hour < 12) {
-    timeOfDay = 'Morning';
-  } else if (hour >= 12 && hour < 17) {
-    timeOfDay = 'Afternoon';
-  } else if (hour >= 17 && hour < 20) {
-    timeOfDay = 'Evening';
-  } else {
-    timeOfDay = 'Night';
-  }
+  if (hour >= 5 && hour < 12) timeOfDay = 'Morning';
+  else if (hour >= 12 && hour < 17) timeOfDay = 'Afternoon';
+  else if (hour >= 17 && hour < 20) timeOfDay = 'Evening';
+  else timeOfDay = 'Night';
 
   return { day, date, month, year, timeOfDay, formattedTime };
 }
 
-function updateBackground(main, description, currentUnix, sunrise, sunset, offset) {
-  const hour = new Date((currentUnix + offset) * 1000).getUTCHours();
-  const isNight = hour < 6 || hour > 18;
-
-  let bg = 'default.jpg';
-  if (isNight && main.toLowerCase() === 'clear') {
-    bg = 'moon.gif';
-  } else if (main.toLowerCase().includes('rain')) {
-    bg = 'rainy.gif';
-  } else if (main.toLowerCase().includes('cloud')) {
-    bg = 'cloudy.gif';
-  } else if (main.toLowerCase().includes('snow')) {
-    bg = 'snowfall.gif';
-  } else if (main.toLowerCase().includes('thunder')) {
-    bg = 'thunder.gif';
-  } else if (main.toLowerCase().includes('haze') || description.includes('fog')) {
-    bg = 'haze.gif';
-  } else if (main.toLowerCase().includes('clear')) {
-    bg = 'sunny.gif';
-  }
-  background.style.backgroundImage = `url('gifs/${bg}')`;
-}
-
+// Splash Screen Animation
 document.body.classList.add('loading');
 
 window.addEventListener('load', () => {
-  const mercury = document.getElementById('mercury');
-  const tempValue = document.getElementById('tempValue');
-  const degreeLabel = document.getElementById("degreeLabel");
+
+  const cloud = document.querySelector('.cloud');
+  const rain = document.querySelector('.rain');
+
+  for (let i = 0; i < 10; i++) {
+    const drop = document.createElement('span');
+    drop.style.setProperty('--i', i);
+    rain.appendChild(drop);
+  }
+
+  setTimeout(() => {
+    cloud.classList.add('animate__fadeIn');
+    cloud.style.opacity = '1';
+  }, 500);
+
+  setTimeout(() => {
+    rain.classList.add('animate__fadeIn');
+    rain.style.opacity = '1';
+  }, 1000);
 
   let temp = 0;
   const interval = setInterval(() => {
@@ -155,10 +227,12 @@ window.addEventListener('load', () => {
         document.querySelector(".container").style.display = "flex";
         document.querySelector("footer").style.display = "block";
         document.body.classList.remove('loading');
+        fetchWeather(currentLocation);
       }, 1000);
     } else {
       temp++;
       mercury.style.height = `${temp * 2}px`;
+      degreeLabel.style.transform = `translateY(${temp * 2 - 100}px)`;
       tempValue.textContent = `${temp}°C`;
     }
   }, 30);

@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mausam360°</title>
+  <title>Weather360°</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="gifs/icon.ico" type="image/x-icon"/>
 </head>
@@ -11,64 +14,90 @@
 <!-- Splash Screen -->
 <div id="splash">
   <div class="splash-content">
-    <!-- Thermometer -->
-    <div class="thermometer-wrapper">
-      <div class="thermometer">
-        <div class="mercury" id="mercury"></div>
-        <span class="degree-label" id="degreeLabel">°C</span>
-        <div class="temp-value" id="tempValue">0°C</div>
-      </div>
-
-      <!-- Logo beside thermometer -->
-      <img src="gifs/icon.ico" alt="Mausam360° Logo" class="splash-logo" />
+    <!-- Animated Weather Elements -->
+    <div class="weather-animations">
+      <div class="sun animate__animated animate__pulse animate__infinite"></div>
+      <div class="cloud animate__animated animate__fadeInLeft"></div>
+      <div class="rain animate__animated animate__fadeInDown"></div>
     </div>
 
     <!-- Title below -->
-    <h1 class="splash-title">Mausam360°</h1>
+    <h1 class="splash-title"> Weather360°</h1>
+    <p class="splash-subtitle">Forecasting Every Moment</p>
   </div>
 </div>
-  <!-- Dynamic Background -->
-  <div id="background"></div>
+
+  <!-- Dynamic Background with Particles -->
+  <div id="background">
+    <div id="particles-js"></div>
+  </div>
 
   <div class="container">
     <div class="branding">
       <img src="gifs/icon.ico" alt="App Icon" class="branding-icon" />
-      <span class="branding-title">Mausam360°</span>
+      <span class="branding-title">Weather360°</span>
     </div>
     
     <!-- Left: Current Weather -->
     <div class="current-weather">
-      <!-- Location Input -->
-      <input type="text" id="locationInput" placeholder="Enter a location" />
+      <!-- Location Input with Search Icon -->
+      <div class="search-container">
+        <input type="text" id="locationInput" placeholder="Enter a location" />
+        <button id="searchBtn"><i class="fas fa-search"></i></button>
+      </div>
 
-      <div id="ClimaCast">
-        <h2 id="location">--</h2>
-        <h1 id="temperature">--°C</h1>
-        <h3 id="description">--</h3>
-        <img id="icon" src="" alt="weather icon" />
-        <div class="local-time" id="localTime"></div>
+      <div id="Weather360°" class="weather-card animate__animated animate__fadeIn">
+        <div class="location-time">
+          <h2 id="location">--</h2>
+          <div class="local-time" id="localTime"></div>
+        </div>
+        
+        <div class="weather-main">
+          <div class="icon-container">
+            <img id="icon" src="" alt="weather icon" />
+          </div>
+          <div class="temp-details">
+            <h1 id="temperature">--°C</h1>
+            <h3 id="description">--</h3>
+            <div class="min-max">
+              <span id="temp-min"><i class="fas fa-arrow-down"></i> --°</span>
+              <span id="temp-max"><i class="fas fa-arrow-up"></i> --°</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hourly Forecast -->
+      <div class="hourly-forecast">
+        <h3><i class="fas fa-clock"></i> Hourly Forecast</h3>
+        <div id="hourlyCards" class="hourly-cards"></div>
       </div>
     </div>
 
     <!-- Right Panel -->
     <div class="right-panel">
       <!-- Top: Live Conditions -->
-      <div class="live-conditions-wrapper">
-        <h2>Live Conditions</h2>
+      <div class="live-conditions-wrapper animate__animated animate__fadeInRight">
+        <h2><i class="fas fa-chart-line"></i> Live Conditions</h2>
         <div id="liveConditions" class="live-conditions"></div>
       </div>
 
       <!-- Bottom: 5-Day Forecast -->
-      <div class="forecast">
-        <h2>5-Day Forecast</h2>
-        <div id="forecastCards"></div>
+      <div class="forecast animate__animated animate__fadeInRight">
+        <h2><i class="fas fa-calendar-alt"></i> 5-Day Forecast</h2>
+        <div id="forecastCards" class="forecast-grid"></div>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="footer">© 2025 Mausam360. All rights reserved.</footer>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2025 Weather360. All rights reserved.</p>
+    </div>
+  </footer>
 
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

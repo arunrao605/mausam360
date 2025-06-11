@@ -511,7 +511,7 @@ body, html {
 @media (min-width: 768px) {
   .branding {
     position: absolute;
-    top: 10px;
+    top: 6px;
     left: 30px;
     justify-content: flex-start;
   }

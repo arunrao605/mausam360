@@ -75,21 +75,6 @@ body, html {
   }
 }
 
-/* Current Weather Section */
-.current-weather {
-  width: 100%;
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  border: 1px solid rgba(250, 250, 250, 0.3);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 @media (min-width: 1024px) {
   .current-weather {
     width: 40%;
@@ -101,7 +86,7 @@ body, html {
 /* Search Container */
 .search-container {
   position: relative;
-  width: 100%;
+  width: 97%;
   max-width: 100%;
 }
 
@@ -151,8 +136,8 @@ body, html {
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  height: 420px;
+  gap: 5px;
+  height: 480px;
 }
 
 .location-time {
@@ -411,7 +396,7 @@ body, html {
   box-shadow: var(--shadow);
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin-top: 0px;
+  margin-top: 27px;
 }
 
 .hourly-forecast h3 {
@@ -511,7 +496,7 @@ body, html {
 @media (min-width: 768px) {
   .branding {
     position: absolute;
-    top: 6px;
+    top: 20px;
     left: 30px;
     justify-content: flex-start;
   }

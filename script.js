@@ -13,6 +13,7 @@ const liveConditions = document.getElementById('liveConditions');
 const tempMinDisplay = document.getElementById('temp-min');
 const tempMaxDisplay = document.getElementById('temp-max');
 const hourlyCards = document.getElementById('hourlyCards');
+const background = document.getElementById('background');
 
 // Default location
 let currentLocation = 'London';
@@ -51,6 +52,42 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+// Set background based on weather and time
+function setWeatherBackground(weatherData) {
+  const weatherMain = weatherData.weather[0].main.toLowerCase();
+  const isNight = isNightTime(weatherData);
+  
+  // Clear weather class first
+  background.className = '';
+  background.classList.add('weather-bg-default');
+  
+  if (weatherMain.includes('clear')) {
+    if (isNight) {
+      background.classList.add('weather-bg-clear-night');
+    } else {
+      background.classList.add('weather-bg-clear-day');
+    }
+  } else if (weatherMain.includes('cloud')) {
+    background.classList.add('weather-bg-clouds');
+  } else if (weatherMain.includes('rain')) {
+    background.classList.add('weather-bg-rain');
+  } else if (weatherMain.includes('thunderstorm')) {
+    background.classList.add('weather-bg-thunderstorm');
+  } else if (weatherMain.includes('snow')) {
+    background.classList.add('weather-bg-snow');
+  } else if (weatherMain.includes('mist') || weatherMain.includes('fog') || weatherMain.includes('haze')) {
+    background.classList.add('weather-bg-mist');
+  }
+}
+
+// Check if it's night time
+function isNightTime(weatherData) {
+  const now = new Date();
+  const localTime = new Date((now.getTime() + now.getTimezoneOffset() * 60000) + (weatherData.timezone * 1000));
+  const hours = localTime.getHours();
+  return hours < 6 || hours >= 18;
+}
+
 // Fetch Weather Data
 function fetchWeather(city) {
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
@@ -67,6 +104,9 @@ function fetchWeather(city) {
       .then(data => {
         const timezoneOffset = data.timezone;
         const localDate = getLocalDateTime(data.dt, timezoneOffset);
+
+        // Set background based on weather
+        setWeatherBackground(data);
 
         localTimeDisplay.textContent = `${localDate.day}, ${localDate.date} ${localDate.month} ${localDate.year} — ${localDate.timeOfDay}\nLocal Time: ${localDate.formattedTime}`;
         locationDisplay.textContent = data.name;
@@ -152,12 +192,12 @@ function updateHourlyForecast(forecastList) {
   hourlyCards.innerHTML = '';
 
   const now = new Date();
-  const next12Hours = forecastList.filter(entry => {
+  const next16Hours = forecastList.filter(entry => {
     const entryTime = new Date(entry.dt * 1000);
-    return entryTime > now && entryTime <= new Date(now.getTime() + 12 * 60 * 60 * 1000);
-  }).slice(0, 8);
+    return entryTime > now && entryTime <= new Date(now.getTime() + 16 * 60 * 60 * 1000);
+  }).slice(0, 16);
 
-  next12Hours.forEach((entry, index) => {
+  next16Hours.forEach((entry, index) => {
     const time = new Date(entry.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const icon = entry.weather[0].icon;
 
@@ -198,7 +238,6 @@ function getLocalDateTime(unixTime, offset) {
 document.body.classList.add('loading');
 
 window.addEventListener('load', () => {
-
   const cloud = document.querySelector('.cloud');
   const rain = document.querySelector('.rain');
 
@@ -231,9 +270,6 @@ window.addEventListener('load', () => {
       }, 1000);
     } else {
       temp++;
-      mercury.style.height = `${temp * 2}px`;
-      degreeLabel.style.transform = `translateY(${temp * 2 - 100}px)`;
-      tempValue.textContent = `${temp}°C`;
     }
   }, 30);
 });

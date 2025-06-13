@@ -32,21 +32,19 @@ body, html {
   line-height: 1.6;
 }
 
-/* Background with Particles */
+/* Dynamic Background */
 #background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
   z-index: -3;
   opacity: 0.8;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  transition: opacity 0.5s ease;
+  transition: all 1s ease;
 }
 
 #particles-js {
@@ -127,7 +125,6 @@ body, html {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* Weather Card */
 .weather-card {
   background: var(--card-bg);
   border-radius: 16px;
@@ -139,8 +136,57 @@ body, html {
   gap: 5px;
   height: 480px;
   margin-top: 40px;
+  position: relative; /* Add this */
+  overflow: hidden; /* Add this to contain the background */
 }
 
+/* Add these new styles for the weather card background */
+.weather-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.4; /* Adjust opacity as needed */
+  z-index: -1; /* Place behind the content */
+}
+
+/* Weather-specific background classes for the card */
+.weather-card-clear-day::before {
+  background-image: url('gifs/sunny.gif');
+}
+
+.weather-card-clear-night::before {
+  background-image: url('gifs/moon.gif');
+}
+
+.weather-card-clouds::before {
+  background-image: url('gifs/cloudy.gif');
+}
+
+.weather-card-rain::before {
+  background-image: url('gifs/rainy.gif');
+}
+
+.weather-card-thunderstorm::before {
+  background-image: url('gifs/thunderstorm.gif');
+}
+
+.weather-card-snow::before {
+  background-image: url('gifs/snow.gif');
+}
+
+.weather-card-mist::before {
+  background-image: url('gifs/mist.gif');
+}
+
+.weather-card-default::before {
+  background-image: url('gifs/default.gif');
+}
 .location-time {
   display: flex;
   flex-direction: column;
@@ -462,8 +508,6 @@ body, html {
   margin: 5px auto;
 }
 
-
-
 /* Footer */
 .footer {
   width: 100%;
@@ -480,7 +524,6 @@ body, html {
   margin: 0 auto;
   padding: 0 20px;
 }
-
 
 /* Branding on Main Page */
 .branding {

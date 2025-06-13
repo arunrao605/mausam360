@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Set background based on weather and time
 function setWeatherBackground(weatherData) {
   const weatherMain = weatherData.weather[0].main.toLowerCase();
   const isNight = isNightTime(weatherData);
@@ -61,22 +60,34 @@ function setWeatherBackground(weatherData) {
   background.className = '';
   background.classList.add('weather-bg-default');
   
+  const weatherCard = document.querySelector('.weather-card');
+  weatherCard.className = 'weather-card animate__animated animate__fadeIn'; // Reset classes
+  
   if (weatherMain.includes('clear')) {
     if (isNight) {
       background.classList.add('weather-bg-clear-night');
+      weatherCard.classList.add('weather-card-clear-night');
     } else {
       background.classList.add('weather-bg-clear-day');
+      weatherCard.classList.add('weather-card-clear-day');
     }
   } else if (weatherMain.includes('cloud')) {
     background.classList.add('weather-bg-clouds');
+    weatherCard.classList.add('weather-card-clouds');
   } else if (weatherMain.includes('rain')) {
     background.classList.add('weather-bg-rain');
+    weatherCard.classList.add('weather-card-rain');
   } else if (weatherMain.includes('thunderstorm')) {
     background.classList.add('weather-bg-thunderstorm');
+    weatherCard.classList.add('weather-card-thunderstorm');
   } else if (weatherMain.includes('snow')) {
     background.classList.add('weather-bg-snow');
+    weatherCard.classList.add('weather-card-snow');
   } else if (weatherMain.includes('mist') || weatherMain.includes('fog') || weatherMain.includes('haze')) {
     background.classList.add('weather-bg-mist');
+    weatherCard.classList.add('weather-card-mist');
+  } else {
+    weatherCard.classList.add('weather-card-default');
   }
 }
 

@@ -54,7 +54,7 @@ body, html {
   z-index: -2;
 }
 
-/* Container Layout */
+/* Main Container */
 .container {
   display: flex;
   flex-direction: column;
@@ -65,19 +65,56 @@ body, html {
   gap: 20px;
 }
 
+/* Branding Styles - Logo left of title, centered at top */
+.branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 20px 0;
+  gap: 15px;
+  z-index: 2;
+}
+
+.branding-icon {
+  width: 60px;
+  height: 60px;
+  transition: var(--transition);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.897));
+}
+
+.branding-title {
+  font-size: 35px;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.685);
+  transition: var(--transition);
+}
+
+.branding:hover .branding-icon {
+  transform: rotate(19deg);
+}
+
+.branding:hover .branding-title {
+  color: var(--secondary-color);
+}
+
+/* Layout adjustments for desktop */
 @media (min-width: 1024px) {
   .container {
     flex-direction: row;
     padding: 30px;
     gap: 30px;
   }
-}
 
-@media (min-width: 1024px) {
   .current-weather {
     width: 40%;
     max-width: 550px;
-    margin-top: 85px;
+    margin-top: 20px;
+  }
+
+  .right-panel {
+    width: 60%;
   }
 }
 
@@ -125,6 +162,7 @@ body, html {
   transform: translateY(-50%) scale(1.1);
 }
 
+/* Weather Card */
 .weather-card {
   background: var(--card-bg);
   border-radius: 16px;
@@ -136,12 +174,11 @@ body, html {
   border: 1px solid rgba(255, 255, 255, 0.473);
   gap: 5px;
   height: 480px;
-  margin-top: 40px;
-  position: relative; /* Add this */
-  overflow: hidden; /* Add this to contain the background */
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Add these new styles for the weather card background */
 .weather-card::before {
   content: '';
   position: absolute;
@@ -152,11 +189,11 @@ body, html {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.4; /* Adjust opacity as needed */
-  z-index: -1; /* Place behind the content */
+  opacity: 0.4;
+  z-index: -1;
 }
 
-/* Weather-specific background classes for the card */
+/* Weather-specific background classes */
 .weather-card-clear-day::before {
   background-image: url('gifs/sunny.gif');
 }
@@ -188,6 +225,7 @@ body, html {
 .weather-card-default::before {
   background-image: url('gifs/default.gif');
 }
+
 .location-time {
   display: flex;
   flex-direction: column;
@@ -196,14 +234,14 @@ body, html {
 
 .location-time h2 {
   font-size: 50px;
-  font-weight:bold;
-  color: var(black);
+  font-weight: bold;
+  color: black;
   margin: 0;
 }
 
 .local-time {
   font-size: 20px;
-  color: var(black);
+  color: black;
   opacity: 0.9;
   font-weight: bold;
 }
@@ -242,14 +280,14 @@ body, html {
   font-weight: bold;
   margin: 0;
   line-height: 1;
-  color: var(black);
+  color: black;
 }
 
 .temp-details h3 {
   font-size: 18px;
   font-weight: bold;
   margin: 5px 0 10px;
-  color: var(black);
+  color: black;
   text-transform: capitalize;
 }
 
@@ -260,7 +298,7 @@ body, html {
 
 .min-max span {
   font-size: 15px;
-  font-weight:bold ;
+  font-weight: bold;
   display: flex;
   align-items: center;
   gap: 3px;
@@ -278,12 +316,6 @@ body, html {
   gap: 20px;
 }
 
-@media (min-width: 1024px) {
-  .right-panel {
-    width: 60%;
-  }
-}
-
 /* Live Conditions */
 .live-conditions-wrapper {
   background: var(--card-bg);
@@ -293,7 +325,13 @@ body, html {
   box-shadow: var(--shadow);
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.473);
-  margin-top: 102px;
+  margin-top: 20px;
+}
+
+@media (min-width: 1024px) {
+  .live-conditions-wrapper {
+    margin-top: 102px;
+  }
 }
 
 .live-conditions-wrapper h2 {
@@ -319,7 +357,7 @@ body, html {
 }
 
 .live-conditions .condition {
-  background:  rgba(221, 215, 211, 0.808);
+  background: rgba(221, 215, 211, 0.808);
   padding: 20px 15px;
   border-radius: 12px;
   text-align: center;
@@ -366,7 +404,13 @@ body, html {
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.473);
   margin-bottom: 2px;
-  margin-top: 27px;
+  margin-top: 20px;
+}
+
+@media (min-width: 1024px) {
+  .forecast {
+    margin-top: 27px;
+  }
 }
 
 .forecast h2 {
@@ -407,7 +451,7 @@ body, html {
 .card h4 {
   margin: 0;
   font-size: 22px;
-  font-weight:bold;
+  font-weight: bold;
   color: var(--secondary-color);
 }
 
@@ -446,7 +490,7 @@ body, html {
   box-shadow: var(--shadow);
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.473);
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .hourly-forecast h3 {
@@ -485,7 +529,7 @@ body, html {
 .hourly-card {
   flex: 0 0 auto;
   width: 80px;
-  background:  rgba(221, 215, 211, 0.808);
+  background: rgba(221, 215, 211, 0.808);
   border-radius: 10px;
   padding: 15px 10px;
   text-align: center;
@@ -498,6 +542,7 @@ body, html {
   font-size: 20px;
   font-weight: bold;
 }
+
 .hourly-card:hover {
   background: rgba(236, 236, 188, 0.808);
   transform: translateY(-3px);
@@ -517,7 +562,7 @@ body, html {
   text-align: center;
   font-size: 14px;
   padding: 20px 0;
-  margin-top: 90px;
+  margin-top: 20px;
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(5px);
 }
@@ -526,64 +571,6 @@ body, html {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-}
-
-/* Branding on Main Page */
-.branding {
-  position: relative;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 2;
-  margin-bottom: 15px;
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  .branding {
-    position: absolute;
-    top: 20px;
-    left: 30px;
-    justify-content: flex-start;
-  }
-}
-
-.branding-icon {
-  width: 70px;
-  height: 70px;
-  transition: var(--transition);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.branding:hover .branding-icon {
-  transform: rotate(19deg);
-}
-
-@media (min-width: 768px) {
-  .branding-icon {
-    width: 60px;
-    height: 60px;
-  }
-}
-
-.branding-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary-color);  
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.363);
-  transition: var(--transition);
-}
-
-.branding:hover .branding-title {
-  color: var(--secondary-color);
-}
-
-@media (min-width: 768px) {
-  .branding-title {
-    font-size: 28px;
-  }
 }
 
 /* Splash Page */

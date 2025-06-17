@@ -5,7 +5,7 @@
   --accent-color: #020202;
   --text-color: #2b2d42;
   --light-text: #fafafa;
-  --card-bg: rgba(179, 141, 180, 0.5);
+  --card-bg: rgba(90, 90, 90, 0.404);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.288);
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -28,7 +28,7 @@ body, html {
   height: 100%;
   overflow-x: hidden;
   color: var(--text-color);
-  background: linear-gradient(135deg, #eec3a66c 0%, #b3d7fa 100%);
+  background: linear-gradient(135deg, #2c2c2c25 0%, #2c2c2c25 100%);
   line-height: 1.6;
 }
 
@@ -40,7 +40,7 @@ body, html {
   width: 100%;
   height: 100%;
   z-index: -3;
-  opacity: 0.8;
+  opacity: 0.2;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -94,8 +94,8 @@ body, html {
   font-size: 16px;
   border: none;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: rgba(230, 228, 228, 0.801);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.253);
   transition: var(--transition);
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
@@ -103,7 +103,7 @@ body, html {
 
 .search-container input:focus {
   outline: none;
-  background: white;
+  background: rgb(204, 195, 195);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.363);
 }
 
@@ -133,6 +133,7 @@ body, html {
   transition: var(--transition);
   display: flex;
   flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.473);
   gap: 5px;
   height: 480px;
   margin-top: 40px;
@@ -196,14 +197,14 @@ body, html {
 .location-time h2 {
   font-size: 50px;
   font-weight:bold;
-  color: var(--text-color);
+  color: var(black);
   margin: 0;
 }
 
 .local-time {
   font-size: 20px;
-  color: var(--text-color);
-  opacity: 0.8;
+  color: var(black);
+  opacity: 0.9;
   font-weight: bold;
 }
 
@@ -226,7 +227,7 @@ body, html {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.822));
   transition: var(--transition);
 }
 
@@ -241,14 +242,14 @@ body, html {
   font-weight: bold;
   margin: 0;
   line-height: 1;
-  color: var(--text-color);
+  color: var(black);
 }
 
 .temp-details h3 {
   font-size: 18px;
   font-weight: bold;
   margin: 5px 0 10px;
-  color: var(--text-color);
+  color: var(black);
   text-transform: capitalize;
 }
 
@@ -291,7 +292,7 @@ body, html {
   padding: 25px;
   box-shadow: var(--shadow);
   transition: var(--transition);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.473);
   margin-top: 102px;
 }
 
@@ -318,7 +319,7 @@ body, html {
 }
 
 .live-conditions .condition {
-  background:  rgba(240, 197, 168, 0.808);
+  background:  rgba(221, 215, 211, 0.808);
   padding: 20px 15px;
   border-radius: 12px;
   text-align: center;
@@ -347,7 +348,7 @@ body, html {
   width: 80px;
   height: 80px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.747));
   transition: var(--transition);
 }
 
@@ -363,7 +364,7 @@ body, html {
   padding: 25px;
   box-shadow: var(--shadow);
   transition: var(--transition);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.473);
   margin-bottom: 2px;
   margin-top: 27px;
 }
@@ -385,7 +386,7 @@ body, html {
 }
 
 .card {
-  background: rgba(240, 197, 168, 0.808);
+  background: rgba(221, 215, 211, 0.808);
   border-radius: 12px;
   padding: 20px 15px;
   text-align: center;
@@ -415,6 +416,7 @@ body, html {
   height: 70px;
   margin: 5px auto;
   object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.822));
   transition: var(--transition);
 }
 
@@ -424,7 +426,7 @@ body, html {
 
 .card p {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: bold;
   margin: 0;
 }
 
@@ -443,7 +445,7 @@ body, html {
   padding: 25px;
   box-shadow: var(--shadow);
   transition: var(--transition);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.473);
   margin-top: 40px;
 }
 
@@ -483,7 +485,7 @@ body, html {
 .hourly-card {
   flex: 0 0 auto;
   width: 80px;
-  background:  rgba(240, 197, 168, 0.808);
+  background:  rgba(221, 215, 211, 0.808);
   border-radius: 10px;
   padding: 15px 10px;
   text-align: center;
@@ -505,6 +507,7 @@ body, html {
 .hourly-card img {
   width: 55px;
   height: 55px;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.822));
   margin: 5px auto;
 }
 
@@ -568,8 +571,8 @@ body, html {
 .branding-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--primary-color);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: var(--primary-color);  
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.363);
   transition: var(--transition);
 }
 
@@ -590,7 +593,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #b6bfe9 0%, #3f37c9 100%);
+  background: linear-gradient(135deg, #2c2c2c 0%, #2c2c2c 100%);
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -625,7 +628,7 @@ body, html {
   border-radius: 50%;
   top: 20px;
   left: 70px;
-  box-shadow: 0 0 30px #ffde59;
+  box-shadow: 0 0 30px #ffde59c9;
 }
 
 .cloud {
@@ -633,6 +636,7 @@ body, html {
   width: 80px;
   height: 30px;
   background: #fff;
+  box-shadow: 0 0 30px #ffffffd3;
   border-radius: 20px;
   top: 40px;
   left: 30px;
@@ -693,19 +697,11 @@ body, html {
   }
 }
 
-/* Thermometer Container */
-.thermometer-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
 .splash-title {
   font-size: 50px;
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  color: #2c2c2cf8;
+  color: #f0f0f0f8;
   margin: 10px 0;
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   animation: titlePop 1.5s ease-out forwards;
@@ -713,7 +709,7 @@ body, html {
 
 .splash-subtitle {
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(233, 233, 233, 0.8);
   font-family: 'Poppins', sans-serif;
   animation: fadeIn 1s ease-out 1s forwards;
   opacity: 0;
@@ -747,29 +743,6 @@ body, html {
 @media (max-width: 768px) {
   .splash-title {
     font-size: 36px;
-  }
-  
-  .thermometer {
-    width: 30px;
-    height: 150px;
-  }
-  
-  .degree-label {
-    right: -20px;
-    font-size: 16px;
-  }
-  
-  .temp-value {
-    font-size: 16px;
-  }
-  
-  .weather-main {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .temp-details {
-    align-items: center;
   }
   
   .forecast-grid {

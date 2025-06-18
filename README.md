@@ -1,7 +1,8 @@
 # Weather360° - Interactive Weather Dashboard
 
 ![Weather360° Screenshot](Screenshots/Screenshot_2025-06-18-12-29-18-84.jpg)
-![Weather360° Screenshot](Screenshots/Screenshot_2025-06-18-12-29-02-88.jpg ) <!-- Add a screenshot later -->
+![Weather360° Screenshot](Screenshots/Screenshot_2025-06-18-12-29-02-88.jpg ) 
+![Weather360° Screenshot](Screenshots/Screenshot_2025-06-18-12-29-09-82.jpg)
 
 Weather360° is a modern, interactive weather dashboard that provides real-time weather information, forecasts, and beautiful visualizations. With dynamic backgrounds, animated elements, and detailed weather data, it offers a delightful user experience.
 

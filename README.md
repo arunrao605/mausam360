@@ -34,4 +34,4 @@ wedsite link- https://weather360-puce.vercel.app/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/Weather360.git
+   git clone https://github.com/arunrao605/Weather360.git

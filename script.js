@@ -19,6 +19,7 @@ const background = document.getElementById('background');
 let currentLocation = 'London';
 let chart = null;
 let blinkInterval = null;
+let weatherMap = null;
 
 // Event Listeners
 locationInput.addEventListener('keydown', function(e) {
@@ -61,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
       retina_detect: true
     });
   }
+
+  // Initialize weather map
+  initWeatherMap();
 });
 
 function setWeatherBackground(weatherData) {
@@ -248,26 +252,20 @@ function fetchWeather(city) {
 }
 
 function updateHourlyForecast(forecastList, timezoneOffset = 0) {
-  // Clear previous blinking interval
   if (blinkInterval) {
     clearInterval(blinkInterval);
     blinkInterval = null;
   }
 
-  // Convert timezoneOffset to number (in case it's string)
   timezoneOffset = Number(timezoneOffset) || 0;
-
-  // Get current time in local timezone
   const now = new Date();
   const localNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + timezoneOffset * 1000);
   const currentHour = new Date(localNow);
   currentHour.setMinutes(0, 0, 0);
 
-  // Get data for past 2 hours, current hour, and next 13 hours (16 total)
   const startTime = new Date(currentHour.getTime() - 2 * 60 * 60 * 1000);
   const endTime = new Date(currentHour.getTime() + 14 * 60 * 60 * 1000);
 
-  // Find the forecast point just before our start time
   let baseIndex = 0;
   while (baseIndex < forecastList.length - 1 && 
          new Date(forecastList[baseIndex].dt * 1000) < startTime) {
@@ -275,15 +273,12 @@ function updateHourlyForecast(forecastList, timezoneOffset = 0) {
   }
   baseIndex = Math.max(0, baseIndex - 1);
 
-  // Create hourly data points through interpolation
   const hourlyData = [];
   let currentIndex = baseIndex;
   
-  // Generate data for each hour in our range
   for (let hour = 0; hour < 16; hour++) {
     const targetTime = new Date(startTime.getTime() + hour * 60 * 60 * 1000);
     
-    // Find the two forecast points that bracket our target time
     while (currentIndex < forecastList.length - 1 && 
            new Date(forecastList[currentIndex + 1].dt * 1000) < targetTime) {
       currentIndex++;
@@ -296,14 +291,11 @@ function updateHourlyForecast(forecastList, timezoneOffset = 0) {
     const prevTime = new Date(prevPoint.dt * 1000);
     const nextTime = new Date(nextPoint.dt * 1000);
     
-    // Calculate ratio for interpolation
     const timeDiff = nextTime - prevTime;
     const ratio = timeDiff > 0 ? (targetTime - prevTime) / timeDiff : 0;
     
-    // Interpolate temperature
     const temp = prevPoint.main.temp + (nextPoint.main.temp - prevPoint.main.temp) * ratio;
     
-    // Distribute precipitation evenly across hours
     const prevRain = prevPoint.rain ? (prevPoint.rain['3h'] || 0) / 3 : 0;
     const nextRain = nextPoint.rain ? (nextPoint.rain['3h'] || 0) / 3 : 0;
     const precip = prevRain + (nextRain - prevRain) * ratio;
@@ -312,11 +304,10 @@ function updateHourlyForecast(forecastList, timezoneOffset = 0) {
       time: targetTime,
       temp: temp,
       precip: precip,
-      isCurrent: Math.abs(targetTime.getTime() - currentHour.getTime()) < 30 * 60 * 1000 // Within 30 minutes
+      isCurrent: Math.abs(targetTime.getTime() - currentHour.getTime()) < 30 * 60 * 1000
     });
   }
 
-  // Prepare chart data
   const labels = hourlyData.map(entry => {
     return entry.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   });
@@ -325,12 +316,10 @@ function updateHourlyForecast(forecastList, timezoneOffset = 0) {
   const precipitations = hourlyData.map(entry => entry.precip);
   const currentIndexInData = hourlyData.findIndex(entry => entry.isCurrent);
 
-  // Destroy previous chart if it exists
   if (chart && typeof chart.destroy === 'function') {
     chart.destroy();
   }
 
-  // Create new chart only if canvas is available
   if (!weatherChart) return;
   
   const ctx = weatherChart.getContext('2d');
@@ -441,7 +430,6 @@ function updateHourlyForecast(forecastList, timezoneOffset = 0) {
     }
   });
 
-  // Add blinking effect to current time point
   if (currentIndexInData >= 0 && chart) {
     blinkInterval = setInterval(() => {
       if (!chart || chart.ctx === null) {
@@ -499,6 +487,173 @@ function getLocalDateTime(unixTime, offset) {
   }
 }
 
+function initWeatherMap() {
+  // Check if map container exists
+  if (!document.getElementById('weatherMap')) return;
+
+  // Load Leaflet CSS if not already loaded
+  if (!document.querySelector('link[href*="leaflet"]')) {
+    const leafletCSS = document.createElement('link');
+    leafletCSS.rel = 'stylesheet';
+    leafletCSS.href = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
+    document.head.appendChild(leafletCSS);
+  }
+
+  // Load Leaflet JS if not already loaded
+  if (!window.L) {
+    const leafletJS = document.createElement('script');
+    leafletJS.src = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js';
+    leafletJS.onload = setupWeatherMap;
+    document.body.appendChild(leafletJS);
+  } else {
+    setupWeatherMap();
+  }
+}
+
+function setupWeatherMap() {
+  const map = L.map('weatherMap').setView([20, 0], 2);
+  const tooltip = document.getElementById('mapTooltip');
+  
+  // Base map layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Weather map layers
+  const weatherLayers = {
+    temp: L.tileLayer(`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
+      attribution: 'Temperature data © OpenWeatherMap'
+    }),
+    clouds: L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
+      attribution: 'Cloud data © OpenWeatherMap'
+    }),
+    precipitation: L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
+      attribution: 'Precipitation data © OpenWeatherMap'
+    }),
+    wind: L.tileLayer(`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
+      attribution: 'Wind data © OpenWeatherMap'
+    }),
+    pressure: L.tileLayer(`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
+      attribution: 'Pressure data © OpenWeatherMap'
+    })
+  };
+
+  // Add default layer
+  weatherLayers.temp.addTo(map);
+  let activeLayer = 'temp';
+
+  // Map hover functionality
+  map.on('mousemove', function(e) {
+    fetchWeatherDataForMap(e.latlng, activeLayer, tooltip, e.containerPoint);
+  });
+
+  map.on('mouseout', function() {
+    if (tooltip) tooltip.style.display = 'none';
+  });
+
+  // Click functionality for detailed popup
+  map.on('click', function(e) {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng.lat}&lon=${e.latlng.lng}&appid=${apiKey}&units=metric`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.main && data.weather) {
+          const rain = data.rain ? (data.rain['1h'] || 0) : 0;
+          let rainIntensity = 'No rain';
+          if (rain > 0 && rain <= 2.5) rainIntensity = 'Light rain';
+          else if (rain > 2.5 && rain <= 7.6) rainIntensity = 'Moderate rain';
+          else if (rain > 7.6) rainIntensity = 'Heavy rain';
+          
+          const popupContent = `
+            <div class="weather-popup">
+              <h3>${data.name || 'Unknown location'}</h3>
+              <p><strong>Temperature:</strong> ${Math.round(data.main.temp)}°C</p>
+              <p><strong>Feels like:</strong> ${Math.round(data.main.feels_like)}°C</p>
+              <p><strong>Conditions:</strong> ${data.weather[0].description}</p>
+              <p><strong>Rain:</strong> ${rainIntensity} (${rain}mm)</p>
+              <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+              <p><strong>Wind:</strong> ${data.wind.speed} m/s, ${data.wind.deg}°</p>
+            </div>
+          `;
+          
+          L.popup()
+            .setLatLng(e.latlng)
+            .setContent(popupContent)
+            .openOn(map);
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching weather data for popup:", err);
+      });
+  });
+
+  // Layer control buttons
+  document.querySelectorAll('.map-layer').forEach(button => {
+    button.addEventListener('click', function() {
+      const layer = this.dataset.layer;
+      
+      // Remove previous weather layer
+      if (weatherLayers[activeLayer]) {
+        map.removeLayer(weatherLayers[activeLayer]);
+      }
+      
+      // Add new weather layer
+      if (weatherLayers[layer]) {
+        weatherLayers[layer].addTo(map);
+        activeLayer = layer;
+        
+        // Update UI
+        document.querySelectorAll('.map-layer').forEach(btn => 
+          btn.classList.remove('active'));
+        this.classList.add('active');
+      }
+    });
+  });
+
+  // Set initial active button
+  document.querySelector('.map-layer[data-layer="temp"]').classList.add('active');
+}
+
+function fetchWeatherDataForMap(latlng, activeLayer, tooltip, containerPoint) {
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latlng.lat}&lon=${latlng.lng}&appid=${apiKey}&units=metric`)
+    .then(response => response.json())
+    .then(data => {
+      if (!data.main || !tooltip) return;
+
+      let tooltipContent = '';
+      
+      if (activeLayer === 'temp') {
+        tooltipContent = `${Math.round(data.main.temp)}°C`;
+      } 
+      else if (activeLayer === 'precipitation') {
+        const rain = data.rain ? (data.rain['1h'] || 0) : 0;
+        let intensity = 'No rain';
+        if (rain > 0 && rain <= 2.5) intensity = 'Light rain';
+        else if (rain > 2.5 && rain <= 7.6) intensity = 'Moderate rain';
+        else if (rain > 7.6) intensity = 'Heavy rain';
+        tooltipContent = intensity;
+      }
+      else if (activeLayer === 'clouds') {
+        tooltipContent = `${data.clouds?.all || 0}% cloud cover`;
+      }
+      else if (activeLayer === 'wind') {
+        tooltipContent = `${data.wind?.speed || 0} m/s, ${data.wind?.deg || 0}°`;
+      }
+      else if (activeLayer === 'pressure') {
+        tooltipContent = `${data.main?.pressure || 0} hPa`;
+      }
+
+      if (tooltipContent) {
+        tooltip.style.display = 'block';
+        tooltip.style.left = (containerPoint.x + 15) + 'px';
+        tooltip.style.top = (containerPoint.y + 15) + 'px';
+        tooltip.innerHTML = tooltipContent;
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching weather data for tooltip:", err);
+    });
+}
+
 // Splash Screen Animation
 document.body.classList.add('loading');
 
@@ -554,5 +709,5 @@ window.addEventListener('load', () => {
 window.addEventListener('load', () => {
   setTimeout(() => {
     fetchWeather(currentLocation);
-  }, 3500); // Wait for splash screen to finish
+  }, 3500);
 });

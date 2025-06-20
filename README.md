@@ -6,6 +6,7 @@
 ![Weather360° Screenshot](Screenshots/Screenshot_2025-06-20-12-55-37-31.jpg)
 
 
+
 A modern, visually stunning weather application that provides real-time weather data, forecasts, and interactive maps with beautiful animations and dynamic backgrounds.
 
 ## Features ✨

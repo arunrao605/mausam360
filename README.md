@@ -4,20 +4,41 @@
 ![Weather360° Screenshot](Screenshots/Screenshot_2025-06-18-12-29-02-88.jpg ) 
 ![Weather360° Screenshot](Screenshots/Screenshot_2025-06-18-12-29-09-82.jpg)
 
-Weather360° is a modern, interactive weather dashboard that provides real-time weather information, forecasts, and beautiful visualizations. With dynamic backgrounds, animated elements, and detailed weather data, it offers a delightful user experience.
+A modern, visually stunning weather application that provides real-time weather data, forecasts, and interactive maps with beautiful animations and dynamic backgrounds.
 
-wedsite link- https://weather360-puce.vercel.app/
+## Features ✨
 
-## Features
+### 🌍 Current Weather
+- Real-time temperature, conditions, and feels-like temperature
+- Min/max temperatures with visual indicators
+- Local time and date display
+- Dynamic background that changes with weather conditions
 
-- 🌦️ **Real-time Weather Data**: Current conditions for any location worldwide
-- 📊 **Interactive Charts**: Temperature and precipitation forecasts with Chart.js
-- 🌅 **Dynamic Backgrounds**: Changes based on current weather conditions
-- 📱 **Responsive Design**: Works on all device sizes
-- 🌡️ **Detailed Metrics**: Temperature, humidity, wind speed, pressure, and more
-- 🌙 **Day/Night Mode**: Automatic theme adjustment based on local time
-- 🎨 **Animated UI**: Smooth transitions and loading animations
-- 📍 **5-Day Forecast**: Daily weather predictions at a glance
+### 📊 Interactive Charts
+- 16-hour temperature and precipitation forecast
+- Animated current time indicator
+- Interactive tooltips with detailed data
+
+### 🗺️ Weather Map
+- **5 Interactive Layers**:
+  - Temperature heatmap
+  - Cloud cover visualization
+  - Precipitation intensity
+  - Wind speed and direction
+  - Atmospheric pressure
+- **Hover Tooltips**: See weather data for any location
+- **Click Popups**: Get detailed weather info for any point on the map
+
+### 🌦️ 5-Day Forecast
+- Daily weather predictions at a glance
+- Weather condition icons
+- Temperature ranges
+
+### 🎨 Visual Design
+- Dynamic particle background
+- Weather-appropriate animations
+- Responsive layout for all devices
+- Smooth transitions and loading effects
 
 ## Technologies Used
 

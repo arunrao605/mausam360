@@ -317,8 +317,10 @@ body, html {
   box-shadow: var(--shadow);
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.473);
-  margin-top: 40px;
+  margin-bottom: 35px;
   height: 605px;
+  width: 94%;
+  margin-left: 30px;
 }
 
 .graph-forecast h3 {
@@ -332,7 +334,7 @@ body, html {
 }
 
 #weatherChart {
-  width: 100% !important;
+  width: 99% !important;
   height: 500px !important;
   margin-top: 10px;
 }
@@ -741,9 +743,9 @@ body, html {
   margin: 30px 0;
   box-shadow: var(--shadow);
   border: 1px solid rgba(255, 255, 255, 0.473);
-  margin-bottom: 35px;
-  width: 95%;
-  margin-left: 29px;
+  margin-bottom: 2px;
+  width: 99%;
+  margin-left: 5px;
 }
 
 .weather-map h2 {

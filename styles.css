@@ -821,3 +821,37 @@ body, html {
   margin: 5px 0;
   font-size: 14px;
 }
+/* Dark map styles */
+#weatherMap {
+  filter: brightness(0.8) contrast(1.2);
+}
+
+/* Dark overlay for weather layers */
+.dark-weather-layer {
+  filter: brightness(0.7) contrast(1.3) saturate(1.2);
+}
+
+/* Special darker treatment for precipitation */
+.dark-precipitation-layer {
+  filter: brightness(0.6) contrast(1.4) saturate(1.3);
+}
+
+/* Darker base map tiles */
+.leaflet-tile {
+  filter: brightness(0.7) contrast(1.2) !important;
+}
+
+/* Dark mode for map controls */
+.leaflet-control {
+  filter: brightness(0.8);
+}
+
+/* Darker popups */
+.leaflet-popup-content-wrapper {
+  background-color: #222;
+  color: #eee;
+}
+
+.leaflet-popup-tip {
+  background-color: #222;
+}

@@ -162,6 +162,62 @@ body, html {
   transform: translateY(-50%) scale(1.1);
 }
 
+/* Search Suggestions */
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: none;
+}
+
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+}
+
+.suggestion-item:hover {
+  background: rgba(236, 236, 188, 0.808);
+}
+
+.suggestion-item .name {
+  font-weight: 500;
+}
+
+.suggestion-item .details {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Hide scrollbar but keep functionality */
+.suggestions-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.suggestions-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 0 12px 0;
+}
+
+.suggestions-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.suggestions-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 /* Weather Card */
 .weather-card {
   background: var(--card-bg);
@@ -821,6 +877,7 @@ body, html {
   margin: 5px 0;
   font-size: 14px;
 }
+
 /* Dark map styles */
 #weatherMap {
   filter: brightness(0.8) contrast(1.2);

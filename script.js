@@ -20,21 +20,43 @@ let currentLocation = 'London';
 let chart = null;
 let blinkInterval = null;
 let weatherMap = null;
+let debounceTimer;
 
 // Event Listeners
 locationInput.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
+    document.getElementById('suggestions').style.display = 'none';
     currentLocation = locationInput.value;
     fetchWeather(currentLocation);
   }
 });
 
 searchBtn.addEventListener('click', function() {
+  document.getElementById('suggestions').style.display = 'none';
   currentLocation = locationInput.value;
   fetchWeather(currentLocation);
 });
 
-// Initialize particles.js
+// Add input event listener with debounce
+locationInput.addEventListener('input', debounce(async (e) => {
+  const query = e.target.value.trim();
+  if (query.length >= 2) {
+    const suggestions = await fetchLocationSuggestions(query);
+    displaySuggestions(suggestions);
+  } else {
+    document.getElementById('suggestions').style.display = 'none';
+  }
+}, 300));
+
+// Add click outside to close suggestions
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.search-container')) {
+    const suggestions = document.getElementById('suggestions');
+    if (suggestions) suggestions.style.display = 'none';
+  }
+});
+
+// Initialize particles.js and map
 document.addEventListener('DOMContentLoaded', function() {
   if (window.particlesJS) {
     particlesJS('particles-js', {
@@ -67,6 +89,82 @@ document.addEventListener('DOMContentLoaded', function() {
   initWeatherMap();
 });
 
+// Search suggestion functions
+async function fetchLocationSuggestions(query) {
+  if (!query || query.length < 2) return [];
+  
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
+    );
+    
+    if (!response.ok) throw new Error('Failed to fetch suggestions');
+    
+    const data = await response.json();
+    return data.map(item => ({
+      name: item.name,
+      state: item.state,
+      country: item.country,
+      lat: item.lat,
+      lon: item.lon
+    }));
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
+    return [];
+  }
+}
+
+function displaySuggestions(suggestions) {
+  const suggestionsContainer = document.getElementById('suggestions');
+  
+  if (!suggestionsContainer) return;
+  
+  if (suggestions.length === 0) {
+    suggestionsContainer.style.display = 'none';
+    return;
+  }
+  
+  suggestionsContainer.innerHTML = '';
+  
+  suggestions.forEach(suggestion => {
+    const suggestionItem = document.createElement('div');
+    suggestionItem.className = 'suggestion-item';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'name';
+    nameSpan.textContent = suggestion.name;
+    
+    const detailsSpan = document.createElement('span');
+    detailsSpan.className = 'details';
+    
+    let details = [];
+    if (suggestion.state) details.push(suggestion.state);
+    if (suggestion.country) details.push(suggestion.country);
+    detailsSpan.textContent = details.join(', ');
+    
+    suggestionItem.appendChild(nameSpan);
+    suggestionItem.appendChild(detailsSpan);
+    
+    suggestionItem.addEventListener('click', () => {
+      locationInput.value = `${suggestion.name}${suggestion.state ? ', ' + suggestion.state : ''}${suggestion.country ? ', ' + suggestion.country : ''}`;
+      suggestionsContainer.style.display = 'none';
+      currentLocation = locationInput.value;
+      fetchWeather(currentLocation);
+    });
+    
+    suggestionsContainer.appendChild(suggestionItem);
+  });
+  
+  suggestionsContainer.style.display = 'block';
+}
+
+function debounce(func, delay) {
+  return function(...args) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
 function setWeatherBackground(weatherData) {
   if (!weatherData?.weather?.[0]?.main) return;
 
@@ -97,7 +195,7 @@ function setWeatherBackground(weatherData) {
       weatherCard.classList.add('weather-card-rain');
     } else if (weatherMain.includes('thunderstorm')) {
       background.classList.add('weather-bg-thunderstorm');
-      weatherCard.classList.add('weather-card-thunderstorm');
+        weatherCard.classList.add('weather-card-thunderstorm');
     } else if (weatherMain.includes('snow')) {
       background.classList.add('weather-bg-snow');
       weatherCard.classList.add('weather-card-snow');

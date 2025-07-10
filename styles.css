@@ -364,6 +364,94 @@ body, html {
   font-size: 12px;
 }
 
+/* Hourly Forecast Styles */
+.hourly-forecast {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.473);
+}
+
+.hourly-forecast h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hourly-forecast-grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding-bottom: 10px;
+}
+
+.hourly-card {
+  min-width: 80px;
+  background: rgba(221, 215, 211, 0.808);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: var(--transition);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hourly-card:hover {
+  background: rgba(236, 236, 188, 0.808);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hourly-card .time {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+
+.hourly-card .temp {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.hourly-card .icon {
+  width: 50px;
+  height: 50px;
+  margin: 5px 0;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.822));
+}
+
+.hourly-card .description {
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+/* Scrollbar styling for hourly forecast */
+.hourly-forecast-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hourly-forecast-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.hourly-forecast-grid::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.hourly-forecast-grid::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 /* Graph Forecast */
 .graph-forecast {
   background: var(rgba(110, 110, 110, 0.644));

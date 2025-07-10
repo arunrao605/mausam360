@@ -71,20 +71,26 @@
         </div>
       </div>
       
-   <!-- Weather Map Section -->
-<section class="weather-map">
-  <h2><i class="fas fa-map-marked-alt"></i> Interactive Weather Map</h2>
-  <div class="map-controls">
-    <button class="map-layer active" data-layer="temp">Temperature</button>
-    <button class="map-layer" data-layer="clouds">Clouds</button>
-    <button class="map-layer" data-layer="precipitation">Precipitation</button>
-    <button class="map-layer" data-layer="wind">Wind</button>
-    <button class="map-layer" data-layer="pressure">Pressure</button>
-  </div>
-    <div id="weatherMap"></div>
-  <div id="mapTooltip"></div>
-  </div>
-</section>
+      <!-- Hourly Forecast -->
+      <div class="hourly-forecast">
+        <h3><i class="fas fa-clock"></i> Hourly Forecast</h3>
+        <div id="hourlyCards" class="hourly-forecast-grid"></div>
+      </div>
+      
+      <!-- Weather Map Section -->
+      <section class="weather-map">
+        <h2><i class="fas fa-map-marked-alt"></i> Interactive Weather Map</h2>
+        <div class="map-controls">
+          <button class="map-layer active" data-layer="temp">Temperature</button>
+          <button class="map-layer" data-layer="clouds">Clouds</button>
+          <button class="map-layer" data-layer="precipitation">Precipitation</button>
+          <button class="map-layer" data-layer="wind">Wind</button>
+          <button class="map-layer" data-layer="pressure">Pressure</button>
+        </div>
+        <div id="weatherMap"></div>
+        <div id="mapTooltip"></div>
+      </section>
+    </div>
 
     <!-- Right Panel -->
     <div class="right-panel">
@@ -102,12 +108,11 @@
     </div>
   </div>
 
-      <!-- Graph Forecast -->
-      <div class="graph-forecast">
-        <h3><i class="fas fa-chart-bar"></i> Temperature & Precipitation </h3>
-        <canvas id="weatherChart"></canvas>
-      </div>
-    </div>
+  <!-- Graph Forecast -->
+  <div class="graph-forecast">
+    <h3><i class="fas fa-chart-bar"></i> Temperature & Precipitation</h3>
+    <canvas id="weatherChart"></canvas>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">

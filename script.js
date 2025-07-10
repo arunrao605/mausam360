@@ -14,6 +14,7 @@ const tempMinDisplay = document.getElementById('temp-min');
 const tempMaxDisplay = document.getElementById('temp-max');
 const weatherChart = document.getElementById('weatherChart');
 const background = document.getElementById('background');
+const hourlyCards = document.getElementById('hourlyCards');
 
 // Global variables
 let currentLocation = 'London';
@@ -195,7 +196,7 @@ function setWeatherBackground(weatherData) {
       weatherCard.classList.add('weather-card-rain');
     } else if (weatherMain.includes('thunderstorm')) {
       background.classList.add('weather-bg-thunderstorm');
-        weatherCard.classList.add('weather-card-thunderstorm');
+      weatherCard.classList.add('weather-card-thunderstorm');
     } else if (weatherMain.includes('snow')) {
       background.classList.add('weather-bg-snow');
       weatherCard.classList.add('weather-card-snow');
@@ -308,6 +309,7 @@ function fetchWeather(city) {
       .then(data => {
         if (!data) throw new Error('No forecast data received');
         
+        // Update 5-day forecast
         if (forecastCards) {
           forecastCards.innerHTML = '';
           const days = {};
@@ -334,8 +336,12 @@ function fetchWeather(city) {
           });
         }
 
+        // Update hourly forecast
+        updateHourlyForecast(data.list, data.city?.timezone || 0);
+        
+        // Update chart
         if (data.city?.timezone !== undefined && data.list) {
-          updateHourlyForecast(data.list, data.city.timezone);
+          updateWeatherChart(data.list, data.city.timezone);
         }
       })
       .catch(err => {
@@ -350,6 +356,50 @@ function fetchWeather(city) {
 }
 
 function updateHourlyForecast(forecastList, timezoneOffset = 0) {
+  if (!hourlyCards) return;
+
+  hourlyCards.innerHTML = '';
+  
+  // Get current time in local timezone
+  const now = new Date();
+  const localNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + timezoneOffset * 1000);
+  
+  // Filter to get only the next 16 hours (1 hour intervals)
+  const hourlyData = [];
+  let count = 0;
+  
+  for (let i = 0; i < forecastList.length && count < 16; i++) {
+    const entry = forecastList[i];
+    const entryTime = new Date(entry.dt * 1000);
+    const localEntryTime = new Date(entryTime.getTime() + timezoneOffset * 1000);
+    
+    // Only take entries that are at least 1 hour apart
+    if (i === 0 || Math.abs(localEntryTime - new Date(forecastList[i-1].dt * 1000 + timezoneOffset * 1000)) >= 3600000) {
+      hourlyData.push(entry);
+      count++;
+    }
+  }
+
+  // Display hourly cards
+  hourlyData.forEach((entry, index) => {
+    const entryTime = new Date(entry.dt * 1000);
+    const localEntryTime = new Date(entryTime.getTime() + timezoneOffset * 1000);
+    const timeString = localEntryTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const icon = entry.weather?.[0]?.icon || '';
+    const description = entry.weather?.[0]?.description || '';
+    
+    hourlyCards.innerHTML += `
+      <div class="hourly-card animate__animated animate__fadeInUp" style="animation-delay: ${index * 0.05}s">
+        <div class="time">${timeString}</div>
+        <img class="icon" src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}" />
+        <div class="temp">${Math.round(entry.main?.temp || 0)}°C</div>
+        <div class="description">${description}</div>
+      </div>
+    `;
+  });
+}
+
+function updateWeatherChart(forecastList, timezoneOffset = 0) {
   if (blinkInterval) {
     clearInterval(blinkInterval);
     blinkInterval = null;
